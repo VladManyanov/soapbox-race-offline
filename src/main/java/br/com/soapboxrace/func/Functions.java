@@ -55,7 +55,7 @@ public class Functions {
 
 	public void ChangeCarIndex(String carId, Boolean literal) {
 		try {
-			log("|| ChangeCarIndex has been called to set carIndex.");
+			log("|| ChangeCarIndex вызвано для назначения carIndex.");
 			String carIndex;
 			if (literal) {
 				carIndex = carId;
@@ -68,7 +68,7 @@ public class Functions {
 			Document doc = docBuilder.parse("www/soapbox/Engine.svc/personas/" + personaId + "/carslots.xml");
 
 			doc.getElementsByTagName("DefaultOwnedCarIndex").item(0).setTextContent(carIndex);
-			log("|| -> Car Index has been set to " + carIndex);
+			log("|| -> CarIndex назначен как " + carIndex);
 			Node OwnedCar = doc.getElementsByTagName("OwnedCarTrans").item(Integer.parseInt(carIndex));
 			DOMImplementationLS lsImpl = (DOMImplementationLS) OwnedCar.getOwnerDocument().getImplementation()
 					.getFeature("LS", "3.0");
@@ -104,7 +104,7 @@ public class Functions {
 			}
 			WriteXML(doc, "www/soapbox/Engine.svc/personas/" + personaId + "/carslots.xml");
 
-			log("|| Carslots of persona " + personaId + " was reconstructed.");
+			log("|| Carslots водителя " + personaId + " обновлён.");
 		} catch (SAXException | IOException | ParserConfigurationException e) {
 			e.printStackTrace();
 		}
@@ -135,7 +135,7 @@ public class Functions {
 								.getAbsoluteFile()));
 				bw.write(carData);
 				bw.close();
-				log("  -> DefaultCar has been (re)written with new car data.");
+				log("  -> DefaultCar перезаписан новыми данными.");
 				// cars
 				String carsW = carData.replace("<OwnedCarTrans>",
 						"<OwnedCarTrans xmlns=\"http://schemas.datacontract.org/2004/07/Victory.DataLayer.Serialization\" xmlns:i=\"http://../.w3.org/2001/XMLSchema-instance\">");
@@ -143,7 +143,7 @@ public class Functions {
 						new File("www/soapbox/Engine.svc/personas/" + personaId + "/cars.xml").getAbsoluteFile()));
 				bw.write(carsW);
 				bw.close();
-				log("  -> Cars has been (re)written with new car data.");
+				log("  -> Файл Cars перезаписан с новыми данными.");
 				// commerce
 				if (HttpSrv.modifiedTarget == "commerce") {
 					String commerceW = carData.replace("<OwnedCarTrans>", "<UpdatedCar>").replace("</OwnedCarTrans>",
@@ -152,7 +152,7 @@ public class Functions {
 							+ commerceW + "<Wallets><WalletTrans><Balance>" + String.valueOf(Economy.amount)
 							+ "</Balance><Currency>" + (Economy.type == 0 ? "CASH" : "BOOST")
 							+ "</Currency></WalletTrans></Wallets></CommerceResultTrans>";
-					log("  -> Commerce has been processed using new car data.");
+					log("  -> Commerce использует новые данные машины.");
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -162,7 +162,7 @@ public class Functions {
 
 	public void ChangeBadges(String BadgesPacket) {
 		try {
-			log("|| Change Badges action detected.");
+			log("|| Обнаружено действие смены значков достижении.");
 			DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			Document packet = docBuilder.parse(new InputSource(new StringReader(BadgesPacket)));
 			Document achievements = docBuilder.parse("www/soapbox/Engine.svc/achievements/achdef.xml");
@@ -170,9 +170,9 @@ public class Functions {
 					.parse("www/soapbox/Engine.svc/DriverPersona/GetPersonaBaseFromList_" + personaId + ".xml");
 			Document doc2 = docBuilder
 					.parse("www/soapbox/Engine.svc/DriverPersona/GetPersonaInfo_" + personaId + ".xml");
-			log("|| -> 4 documents have been loaded into memory.");
+			log("|| -> 4 докумена загружены в память.");
 			int loopA = CountInstances(BadgesPacket, "<SlotId>", "</BadgeBundle>");
-			log("|| -> Amount of new badges: " + String.valueOf(loopA) + ". Starting loop to rewrite badge data.");
+			log("|| -> Количество новых значков: " + String.valueOf(loopA) + ". Обновление данных о значках.");
 			for (int i = 1; i <= loopA; i++) {
 				int slotId = Integer.parseInt(packet.getElementsByTagName("SlotId").item(i - 1).getTextContent());
 				String badgeId = packet.getElementsByTagName("BadgeDefinitionId").item(i - 1).getTextContent();
@@ -188,7 +188,7 @@ public class Functions {
 						.getChildNodes().item(2).getTextContent();
 				String rarity = achievements.getElementsByTagName("AchievementRanks").item(achId).getLastChild()
 						.getChildNodes().item(5).getTextContent();
-				log("  ||  New badge data ->  RankID: " + rankId + ", isRare: " + isRare + ", Rarity: " + rarity + ".");
+				log("  ||  Новые данные значков ->  RankID: " + rankId + ", isRare: " + isRare + ", Rarity: " + rarity + ".");
 				doc.getElementsByTagName("AchievementRankId").item(slotId).setTextContent(rankId);
 				doc.getElementsByTagName("BadgeDefinitionId").item(slotId).setTextContent(badgeId);
 				doc.getElementsByTagName("IsRare").item(slotId).setTextContent(isRare);
@@ -197,13 +197,13 @@ public class Functions {
 				doc2.getElementsByTagName("BadgeDefinitionId").item(slotId).setTextContent(badgeId);
 				doc2.getElementsByTagName("IsRare").item(slotId).setTextContent(isRare);
 				doc2.getElementsByTagName("Rarity").item(slotId).setTextContent(rarity);
-				log("  || -> New badge data written.");
+				log("  || -> Информация о новых значках сохранена.");
 			}
 
 			WriteXML(doc, "www/soapbox/Engine.svc/DriverPersona/GetPersonaBaseFromList_" + personaId + ".xml");
 			WriteXML(doc2, "www/soapbox/Engine.svc/DriverPersona/GetPersonaInfo_" + personaId + ".xml");
 
-			log("|| Change Badges action finalized.");
+			log("|| Действие смены значков достижении завершено.");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -211,7 +211,7 @@ public class Functions {
 
 	public void StartNewTH(boolean isCompleted) {
 		try {
-			Functions.log("|| -> Generating new TH.");
+			Functions.log("|| -> Создание нового поиска сокровищ.");
 			DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			Document doc = docBuilder.parse(new File("www/soapbox/Engine.svc/events/gettreasurehunteventsession.xml"));
 			Random random = new Random();
@@ -223,7 +223,7 @@ public class Functions {
 				doc.getElementsByTagName("CoinsCollected").item(0).setTextContent("0");
 
 				WriteXML(doc, "www/soapbox/Engine.svc/events/gettreasurehunteventsession.xml");
-				log("|| -> You're on a roll! A new TH for today has been generated.");
+				log("|| -> Новый ежедневный поиск сокровищ создан!.");
 			} else if (!isCompleted
 					&& !doc.getElementsByTagName("IsStreakBroken").item(0).getTextContent().equals("true")) { // Lost
 																												// Streak
@@ -232,7 +232,7 @@ public class Functions {
 				doc.getElementsByTagName("IsStreakBroken").item(0).setTextContent("true");
 
 				WriteXML(doc, "www/soapbox/Engine.svc/events/gettreasurehunteventsession.xml");
-				log("|| -> A new TH has been generated.");
+				log("|| -> Новый поиск сокровищ создан.");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -296,7 +296,7 @@ public class Functions {
 		if (m.find() && m.groupCount() > 0) {
 			basketId = m.group(1).replace(":", "");
 		} else {
-			log("BasketId Parse Error.");
+			log("Ошибка в записи BasketId.");
 		}
 		return basketId;
 	}

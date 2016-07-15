@@ -19,13 +19,13 @@ public class Commerce {
 
 	public void saveCommerceData(String commerceTrans) {
 		try {
-			Functions.log("|| Commerce action detected.");
+			Functions.log("|| Обнаружено действие покупки.");
 			Integer carId = Integer.parseInt(fx.ReadCarIndex());
 
 			DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			Document doc2 = docBuilder.parse(new InputSource(new StringReader(commerceTrans)));
 
-			Functions.log("  || Initializing economy module.");
+			Functions.log("  || Запуск модуля экономики.");
 			Economy economy = new Economy();
 
 			sell(commerceTrans, 1);
@@ -46,19 +46,19 @@ public class Commerce {
 				Node SkillModParts = doc.importNode(doc2.getElementsByTagName("SkillModParts").item(0), true);
 				Node Vinyls = doc.importNode(doc2.getElementsByTagName("Vinyls").item(0), true);
 				Node VisualParts = doc.importNode(doc2.getElementsByTagName("VisualParts").item(0), true);
-				Functions.log("|| -> Loaded new parts into memory.");
+				Functions.log("|| -> Новые детали загружены в память.");
 				Node oldPaints = doc.getElementsByTagName("Paints").item(carId);
 				Node oldPerformanceParts = doc.getElementsByTagName("PerformanceParts").item(carId);
 				Node oldSkillModParts = doc.getElementsByTagName("SkillModParts").item(carId);
 				Node oldVinyls = doc.getElementsByTagName("Vinyls").item(carId);
 				Node oldVisualParts = doc.getElementsByTagName("VisualParts").item(carId);
-				Functions.log("|| -> Loaded old parts into memory.");
+				Functions.log("|| -> Старые детали загружены в память.");
 				doc.getElementsByTagName("CustomCar").item(carId).replaceChild(Paints, oldPaints);
 				doc.getElementsByTagName("CustomCar").item(carId).replaceChild(PerformanceParts, oldPerformanceParts);
 				doc.getElementsByTagName("CustomCar").item(carId).replaceChild(SkillModParts, oldSkillModParts);
 				doc.getElementsByTagName("CustomCar").item(carId).replaceChild(Vinyls, oldVinyls);
 				doc.getElementsByTagName("CustomCar").item(carId).replaceChild(VisualParts, oldVisualParts);
-				Functions.log("|| -> New parts exchanged with old parts.");
+				Functions.log("|| -> Новые детали заменили старые.");
 				Node OwnedCar = doc.getElementsByTagName("OwnedCarTrans").item(carId);
 				DOMImplementationLS lsImpl = (DOMImplementationLS) OwnedCar.getOwnerDocument().getImplementation().getFeature("LS", "3.0");
 				LSSerializer serializer = lsImpl.createLSSerializer();
@@ -67,10 +67,10 @@ public class Commerce {
 				fx.WriteTempCar(StringOwnedCar);
 				fx.WriteXML(doc, "www/soapbox/Engine.svc/personas/" + Functions.personaId + "/carslots.xml");
 
-				Functions.log("|| Commerce data finalized. [carIndex = " + carId + "]");
+				Functions.log("|| Действие покупки окончено. [carIndex = " + carId + "]");
 			} else {
 				Functions.answerData = "";
-				Functions.log(" || !! -> You do not have enough currency!");
+				Functions.log(" || !! -> У вас недостаточно денег!");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -83,14 +83,14 @@ public class Commerce {
 
 		switch (type) {
 		case 0: {
-			Functions.log("|| Aftermarket part sell action detected.");
+			Functions.log("|| Продажа визуальной детали обнаружена.");
 
 			int soldPartIndex = fx.CountInstances(fx.ReadText("www/soapbox/Engine.svc/personas/" + Functions.personaId + "/objects.xml"),
 					"<InventoryItemTrans>", "<EntitlementTag>" + data + "</EntitlementTag>") - 1;
 
-			Functions.log("  || Initializing economy module.");
+			Functions.log("  || Запуск модуля экономики.");
 			Economy economy = new Economy(doc.getElementsByTagName("ResellPrice").item(soldPartIndex).getTextContent(), "0", true);
-			Functions.log("  || -> " + doc.getElementsByTagName("ResellPrice").item(soldPartIndex).getTextContent() + "IGC to be added to your balance.");
+			Functions.log("  || -> " + doc.getElementsByTagName("ResellPrice").item(soldPartIndex).getTextContent() + "IGC добавлены на ваш счёт.");
 			economy.transCurrency(false);
 
 			int remainingUses = Integer.parseInt(doc.getElementsByTagName("RemainingUseCount").item(soldPartIndex).getTextContent());
@@ -100,7 +100,7 @@ public class Commerce {
 				doc.getElementsByTagName("InventoryItems").item(0).removeChild(partToSell);
 				int newPartAmount = Integer.parseInt(doc.getElementsByTagName("VisualPartsUsedSlotCount").item(0).getTextContent()) - 1;
 				doc.getElementsByTagName("VisualPartsUsedSlotCount").item(0).setTextContent(String.valueOf(newPartAmount));
-				Functions.log("|| -> The part has been removed from your inventory.");
+				Functions.log("|| -> Деталь удалена из вашего инвентаря.");
 			} else {
 				doc.getElementsByTagName("RemainingUseCount").item(soldPartIndex).setTextContent(String.valueOf(remainingUses - 1));
 			}
@@ -112,7 +112,7 @@ public class Commerce {
 			Economy economy = new Economy();
 
 			int Occur = fx.CountInstances(data, "<EntitlementId>", "<UpdatedCar>");
-			Functions.log("  || -> " + String.valueOf(Occur) + " part(s) to be sold.");
+			Functions.log("  || -> " + String.valueOf(Occur) + " деталей будет продано.");
 
 			for (int i = 0; i < Occur; i++) {
 				String entitlementId = doc2.getElementsByTagName("EntitlementId").item(i).getTextContent();
@@ -144,7 +144,7 @@ public class Commerce {
 					}
 					}
 					doc.getElementsByTagName("InventoryItems").item(0).removeChild(partToSell);
-					Functions.log("    || -> Part " + String.valueOf(Occur) + " has been removed from your inventory.");
+					Functions.log("    || -> Деталь " + String.valueOf(Occur) + " удалена из вашего инвентаря.");
 				} else {
 					doc.getElementsByTagName("RemainingUseCount").item(soldPartIndex).setTextContent(String.valueOf(remainingUses - 1));
 				}

@@ -61,7 +61,7 @@ public class Event {
 				case "PERFORMANCEPART": {
 					int newParts = Integer.parseInt(inventory.getElementsByTagName("PerformancePartsUsedSlotCount").item(0).getTextContent()) + 1;
 					if (newParts > Integer.parseInt(inventory.getElementsByTagName("PerformancePartsCapacity").item(0).getTextContent())) {
-						Functions.log("|| !!! -> Maximum amount of performance parts was reached. NO NEW PARTS WILL BE ADDED!");
+						Functions.log("|| !!! -> У вас полный инвентарь деталей. НОВЫЕ ДЕТАЛИ НЕ БУДУТ ДОБАВЛЕНЫ!");
 						return;
 					} else {
 						inventory.getElementsByTagName("PerformancePartsUsedSlotCount").item(0).setTextContent(String.valueOf(newParts));
@@ -71,7 +71,7 @@ public class Event {
 				case "SKILLMODPART": {
 					int newParts = Integer.parseInt(inventory.getElementsByTagName("SkillModPartsUsedSlotCount").item(0).getTextContent()) + 1;
 					if (newParts > Integer.parseInt(inventory.getElementsByTagName("SkillModPartsCapacity").item(0).getTextContent())) {
-						Functions.log("|| !!! -> Maximum amount of skill mods was reached. NO NEW PARTS WILL BE ADDED!");
+						Functions.log("|| !!! -> У вас полный инвентарь навыков. НОВЫЕ НАВЫКИ НЕ БУДУТ ДОБАВЛЕНЫ!");
 						return;
 					} else {
 						inventory.getElementsByTagName("SkillModPartsUsedSlotCount").item(0).setTextContent(String.valueOf(newParts));
@@ -81,7 +81,7 @@ public class Event {
 				case "VISUALPART": {
 					int newParts = Integer.parseInt(inventory.getElementsByTagName("VisualPartsUsedSlotCount").item(0).getTextContent()) + 1;
 					if (newParts > Integer.parseInt(inventory.getElementsByTagName("VisualPartsCapacity").item(0).getTextContent())) {
-						Functions.log("|| !!! -> Maximum amount of visual parts was reached. NO NEW PARTS WILL BE ADDED!");
+						Functions.log("|| !!! -> У вас полный инвентарь визуальных деталей. НОВЫЕ ДЕТАЛИ НЕ БУДУТ ДОБАВЛЕНЫ!!");
 						return;
 					} else {
 						inventory.getElementsByTagName("VisualPartsUsedSlotCount").item(0).setTextContent(String.valueOf(newParts));
@@ -127,8 +127,8 @@ public class Event {
 		doc.getElementsByTagName("DefaultOwnedCarIndex").item(0).setTextContent(String.valueOf(_carId));
 		fx.WriteXML(doc, "www/soapbox/Engine.svc/personas/" + Functions.personaId + "/carslots.xml");
 		fx.WriteTempCar(new String(Files.readAllBytes(Paths.get("www/basket/" + basketId + ".xml")), StandardCharsets.UTF_8));
-		Functions.log("|| -> New car has been added to the carslots of persona " + Functions.personaId + ".");
-		Functions.log("|| -> Car Index has been changed to match the new car's ID.");
+		Functions.log("|| -> Новая машина добавлена в файл Carslots водителю " + Functions.personaId + ".");
+		Functions.log("|| -> CarIndex изменен под новую машину.");
 	}
 
 	private void randCatalog() {
@@ -263,7 +263,7 @@ public class Event {
 
 		int curLvl = Integer.parseInt(doc2.getElementsByTagName("Level").item(0).getTextContent()) - 1;
 
-		if (curLvl < 69) {
+		if (curLvl < 99) {
 			int newRep = Integer.parseInt(doc2.getElementsByTagName("Rep").item(0).getTextContent());
 			int curLvlRep = Integer.parseInt(doc2.getElementsByTagName("RepAtCurrentLevel").item(0).getTextContent());
 			newRep = newRep + exp;
@@ -289,7 +289,7 @@ public class Event {
 						type = "PRESETCAR";
 						AddCar(catalog.getElementsByTagName("ProductId").item(catId).getTextContent());
 					}
-					if (curLvl >= 69)
+					if (curLvl >= 99)
 						break;
 					lvlExp = (Integer.parseInt(expMap.getElementsByTagName("int").item(curLvl).getTextContent())
 							- Integer.parseInt(expMap.getElementsByTagName("int").item(curLvl - 1).getTextContent())) - 100;
@@ -298,11 +298,11 @@ public class Event {
 			}
 
 			double percent = 0.0;
-			if (curLvl >= 69) {
+			if (curLvl >= 99) {
 				curLvlRep = 0;
-				curLvl = 69;
+				curLvl = 99;
 				percent = 0.0;
-				newRep = 15882625;
+				newRep = 39882625;
 			} else {
 				percent = Double.valueOf((double) curLvlRep / (double) lvlExp) * 100;
 			}
@@ -356,7 +356,7 @@ public class Event {
 				type = "BUSTED";
 			} else if (arbitrationData.equals("<TreasureHunt/>")) {
 				cash = 1000;
-				if (fx.GetLevel() == 70) {
+				if (fx.GetLevel() == 100) {
 					exp = 0;
 				} else {
 					exp = 500;
@@ -382,7 +382,7 @@ public class Event {
 				cash = (int) Math.round((double) (rank == 1 ? baseReward
 						: (rank == 2 ? ((double) baseReward / 2.0) : (rank == 3 ? ((double) baseReward / 4.0) : ((double) baseReward / 20.0))))
 						* Functions.multipliers[eventType]);
-				if (fx.GetLevel() >= 70) {
+				if (fx.GetLevel() >= 100) {
 					exp = 0;
 				} else {
 					exp = (int) Math.round(

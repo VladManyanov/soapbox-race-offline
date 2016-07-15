@@ -53,14 +53,14 @@ public class MainWindow extends javax.swing.JFrame {
 
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-		launchButton.setText("Launch Game");
+		launchButton.setText("Запустить игру");
 		launchButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				launchButtonActionPerformed(evt);
 			}
 		});
 
-		gamePathLabelGui.setText("Game exe path:");
+		gamePathLabelGui.setText("Путь к exe-файлу игры:");
 
 		gamePathLabel.setText("...");
 
@@ -68,7 +68,7 @@ public class MainWindow extends javax.swing.JFrame {
 
 		aboutLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 		aboutLabel1.setText(
-				"<html>\nsoapbox-race-offline server<br/>\n v1.9.0<br/><br/>\n\n<a href=\"http://www.elitepvpers.com/forum/need-speed-world\">\nhttp://www.elitepvpers.com/forum/need-speed-world\n</a><br/><br/>\n\nby:<br/>\n\nberkay2578 & Nilzao\n</html>");
+				"<html>\nsoapbox-race-offline server<br/>\n v1.9.0 RUS<br/><br/>\n\n<a href=\"http://www.elitepvpers.com/forum/need-speed-world\">\nhttp://www.elitepvpers.com/forum/need-speed-world\n</a><br/><br/>\n\nby:<br/>\n\nberkay2578 & Nilzao, перевод от Hypercycle\n</html>");
 		aboutLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
 		javax.swing.GroupLayout aboutPanelLayout = new javax.swing.GroupLayout(aboutPanel);
@@ -84,7 +84,7 @@ public class MainWindow extends javax.swing.JFrame {
 								.addComponent(aboutLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
 								.addContainerGap()));
 
-		changeExePathButton.setText("Change game exe path");
+		changeExePathButton.setText("Изменить путь к exe-файлу игры");
 		changeExePathButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				changeExePathButtonActionPerformed(evt);
@@ -122,9 +122,9 @@ public class MainWindow extends javax.swing.JFrame {
 								javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addGap(18, 18, 18).addComponent(launchButton).addContainerGap()));
 
-		jTabbedPane1.addTab("Launcher", launcherTabPanel);
+		jTabbedPane1.addTab("Лаунчер", launcherTabPanel);
 
-		jButton1.setText("Clear");
+		jButton1.setText("Очистить");
 		jButton1.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jButton1ActionPerformed(evt);
@@ -155,7 +155,7 @@ public class MainWindow extends javax.swing.JFrame {
 								.addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
 								.addContainerGap()));
 
-		jTabbedPane1.addTab("Log", logTabPanel);
+		jTabbedPane1.addTab("Лог", logTabPanel);
 
 		javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
 		jPanel1.setLayout(jPanel1Layout);
@@ -193,13 +193,13 @@ public class MainWindow extends javax.swing.JFrame {
 			commandStr.append(string);
 			commandStr.append(" ");
 		}
-		Functions.log("\nRunning command:");
+		Functions.log("\nЗапуск команды:");
 		Functions.log(commandStr.toString());
 		Functions.log("\n");
 		try {
 			processBuilder.start();
 		} catch (IOException e) {
-			gamePathLabel.setText("error launching, check log");
+			gamePathLabel.setText("Ошибка запуска, проверьте лог");
 			Functions.log(e.getMessage());
 		}
 	}// GEN-LAST:event_launchButtonActionPerformed

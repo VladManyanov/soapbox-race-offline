@@ -21,10 +21,10 @@ public class XmppSrv {
 			if (xTalk != null) {
 				xTalk.write(msg);
 			} else {
-				System.err.println("xmppClient with the personaId " + personaId + " is attached to a null XmppTalk instance!");
+				System.err.println("xmppClient с personaId " + personaId + " присоединён к нулевой XmppTalk копии!");
 			}
 		} else {
-			System.err.println("xmppClients doesn't contain personaId " + personaId);
+			System.err.println("xmppClients не содержит personaId " + personaId);
 		}
 	}
 
@@ -45,7 +45,7 @@ public class XmppSrv {
 	private static class XmppSrvRun extends Thread {
 		public void run() {
 			try {
-				Functions.log("Xmpp server is running.");
+				Functions.log("XMPP сервер запущен.");
 				Functions.log("");
 				ServerSocket listener = new ServerSocket(5222);
 				try {
@@ -68,7 +68,7 @@ public class XmppSrv {
 		public Capitalizer(Socket socket) {
 			this.socket = socket;
 			xmppTalk = new XmppTalk(this.socket);
-			Functions.log("New connection at " + socket);
+			Functions.log("Новое соединение на " + socket);
 		}
 
 		public void run() {
@@ -85,10 +85,10 @@ public class XmppSrv {
 				try {
 					socket.close();
 				} catch (IOException e) {
-					Functions.log("Couldn't close a socket, what's going on?");
+					Functions.log("Невозможно закрыть соединение, в чём дело?");
 				}
 				XmppSrv.removeXmppClient(xmppTalk.getPersonaId());
-				Functions.log("Connection with client closed");
+				Functions.log("Соединение с клиентом закрыто");
 			}
 		}
 

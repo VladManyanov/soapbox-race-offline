@@ -69,12 +69,12 @@ public class HttpSrv extends GzipHandler {
 				event.processPowerup(sLastTarget, -1);
 			} else if (target.matches("/soapbox/Engine.svc/matchmaking/joinqueueevent(.*)")) {
 				iEvent = Integer.parseInt(sLastTarget);
-				Functions.log("|| Fake Event ID loaded: " + sLastTarget + ". Launch a singleplayer event to load it!");
+				Functions.log("|| Нужная вам гонка сохранена: " + sLastTarget + ". Теперь запустите любую гонку с одиночным режимом!");
 			} else if (target.matches("/soapbox/Engine.svc/matchmaking/launchevent(.*)")) {
 				if (sLastTarget != String.valueOf(iEvent) && iEvent != 0) {
 					modifiedTarget = "/soapbox/Engine.svc/matchmaking/launchevent/" + String.valueOf(iEvent);
 					iEvent = 0;
-					Functions.log("|| -> Fake Event ID has been reset.");
+					Functions.log("|| -> Значение нужной гонки очищено.");
 				}
 			} else if (target.matches("/soapbox/Engine.svc/badges/set"))
 				fx.ChangeBadges(readInputStream(request));
@@ -101,11 +101,11 @@ public class HttpSrv extends GzipHandler {
 			} else if (target.matches("/soapbox/Engine.svc/events/notifycoincollected")) {
 				fx.SaveTHProgress(baseRequest.getParameter("coins"));
 				if (baseRequest.getParameter("coins").equals("32767")) {
-					Functions.log("|| Detected TH Finished event.");
+					Functions.log("|| Обнаружен успешный сбор сокровищ.");
 					if (fx.GetIsTHStreakBroken().equals("true")) {
 						THBroken = true;
 						modifiedTarget = "THBroken";
-						Functions.log("|| -> Your TH Streak is broken.");
+						Functions.log("|| -> Цепочка сбора сокровищ прервана.");
 						Functions.answerData = "<Accolades xmlns=\"http://schemas.datacontract.org/2004/07/Victory.DataLayer.Serialization.Event\" xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\"><FinalRewards><Rep>25</Rep><Tokens>78</Tokens></FinalRewards><HasLeveledUp>false</HasLeveledUp><LuckyDrawInfo><Boxes><LuckyBox><CardDeck>LD_CARD_SILVER</CardDeck></LuckyBox><LuckyBox><CardDeck>LD_CARD_SILVER</CardDeck></LuckyBox><LuckyBox><CardDeck>LD_CARD_SILVER</CardDeck></LuckyBox><LuckyBox><CardDeck>LD_CARD_SILVER</CardDeck></LuckyBox><LuckyBox><CardDeck>LD_CARD_SILVER</CardDeck></LuckyBox></Boxes><CurrentStreak>"
 								+ String.valueOf(fx.GetTHStreak())
 								+ "</CurrentStreak><IsStreakBroken>true</IsStreakBroken><Items></Items><NumBoxAnimations>100</NumBoxAnimations></LuckyDrawInfo><OriginalRewards><Rep>0</Rep><Tokens>0</Tokens></OriginalRewards><RewardInfo/></Accolades>";
@@ -119,7 +119,7 @@ public class HttpSrv extends GzipHandler {
 				modifiedTarget = "Arbitration";
 			} else if (target.matches("/soapbox/Engine.svc/events/accolades")) {
 				if (THBroken) {
-					Functions.log("|| -> Your TH Streak will be revived for 1000 Boost.");
+					Functions.log("|| -> Ваща цепочка сбора сокровищ будет восстановлена за 1000 Boost.");
 					event.ReadArbitration("<TreasureHunt/>");
 					modifiedTarget = "THCompleted";
 					THBroken = false;
@@ -257,7 +257,7 @@ public class HttpSrv extends GzipHandler {
 		mainWindow.setVisible(true);
 		mainWindow.setGamePathLabelText(gameExePath);
 		Functions.setLogTextArea(mainWindow.getLogTextArea());
-		Functions.log("Starting offline server");
+		Functions.log("Запуск оффлайн-сервера...");
 		System.setProperty("jsse.enableCBCProtection", "false");
 		try {
 			Locale newLocale = new Locale("en", "GB");
@@ -278,17 +278,17 @@ public class HttpSrv extends GzipHandler {
 				LocalDate nowDate = LocalDate.now();
 				long days = ChronoUnit.DAYS.between(lastCompletedTHDate, nowDate);
 
-				Functions.log("|| Last TH completed was on " + lastCompletedTHDate.toString() + ".");
+				Functions.log("|| Последний сбор сокровищ был " + lastCompletedTHDate.toString() + ".");
 				if (days == 0) {
-					Functions.log("|| -> Since that date is today, nothing will be done.");
+					Functions.log("|| -> Ничего не будет изменено, так как последний сбор был сегодня.");
 				} else if (days == 1) {
 					fx.StartNewTH(true);
 				} else if (days >= 2) {
 					fx.StartNewTH(false);
-					Functions.log("|| -> Since that date, it's been " + String.valueOf(days)
-							+ " days. Your TH Streak is broken.");
+					Functions.log("|| -> С последнего дня сбора прошло " + String.valueOf(days)
+							+ " дней. Ваша цепочка сбора сокровищ прервана.");
 				} else {
-					Functions.log("|| !! -> Go back where you came from time traveller!");
+					Functions.log("|| !! -> Вы путешественник во времени? Поставьте нормальную дату!");
 				}
 			}
 
