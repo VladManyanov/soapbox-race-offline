@@ -1,5 +1,9 @@
 soapbox-race-offline
 
+v1.9.0 RUS
+Translated by Hypercycle
++ Maximum Level is 100.
+
 Improvement of nfsw offline version 1.8.3
 
 from:
